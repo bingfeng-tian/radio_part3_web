@@ -45,14 +45,14 @@
 
     <div class="card">
         <div class="header-row">
-            <span id="category" class="category-badge">載入中...</span>
+            <span id="category" class="category-badge">載入中</span>
             <span id="q-num" class="q-info">題號</span>
             <span id="session-score" style="margin-left:auto; font-size:0.8rem; color: #8E8E93;">對: 0 | 總: 0</span>
         </div>
         <div id="question" class="question">載入題目中...</div>
         
         <div id="q-image-container" style="text-align: center; margin-bottom: 20px; display: none;">
-            <img id="q-image" src="" style="max-width: 100%; border-radius: 8px; border: 1px solid #eee;">
+            <img id="q-image" src="" style="max-width: 100%; height: auto; border-radius: 8px; border: 1px solid #eee;">
         </div>
 
         <div class="options">
@@ -61,7 +61,7 @@
             <button class="opt-btn" onclick="checkAns('C')" id="optC">C. </button>
             <button class="opt-btn" onclick="checkAns('D')" id="optD">D. </button>
         </div>
-        <button id="next-btn" class="next-btn" onclick="fetchNext()">下一題</button>
+        <button id="next-btn" class="next-btn" onclick="fetchNext()" style="display:none;">下一題</button>
     </div>
 
     <details class="progress-details">

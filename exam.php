@@ -9,16 +9,20 @@
 <body>
 <div class="container">
     <div class="header-row" style="justify-content: space-between; background: white; padding: 15px; border-radius: 12px; margin-bottom: 20px;">
-        <span id="timer" style="font-weight: bold; color: var(--error);">40:00</span>
+        <span id="timer" style="font-weight: bold; color: var(--error);">--:--</span>
         <span id="exam-progress" style="font-weight: bold; color: var(--primary);">題號 -- / --</span>
     </div>
 
     <div id="exam-card" class="card">
-        <div id="category" class="category-badge" style="margin-bottom:10px; display:inline-block;">載入中</div>
-        <div id="question" class="question">載入考卷中...</div>
-        <div id="q-image-container" style="text-align: center; margin-bottom: 20px; display: none;">
-            <img id="q-image" src="" style="max-width: 100%; border-radius: 8px;">
+        <div class="header-row">
+            <span id="category" class="category-badge">載入中</span>
         </div>
+        <div id="question" class="question">載入考卷中...</div>
+        
+        <div id="q-image-container" style="text-align: center; margin-bottom: 20px; display: none;">
+            <img id="q-image" src="" style="max-width: 100%; height: auto; border-radius: 8px; border: 1px solid #eee;">
+        </div>
+
         <div class="options">
             <button class="opt-btn" onclick="submitAns('A')" id="optA">A.</button>
             <button class="opt-btn" onclick="submitAns('B')" id="optB">B.</button>
