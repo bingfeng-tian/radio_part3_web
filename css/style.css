@@ -1,206 +1,308 @@
 /**
- * 三等無線電刷題站 - 全域樣式
+ * 三等無線電刷題站 - 核心樣式表 (極簡專業版)
  */
 
-:root { 
-    --primary: #007AFF; 
-    --success: #34C759; 
-    --error: #FF3B30; 
-    --bg: #F2F2F7;
-    --label-color: #5856D6; 
+:root {
+    --primary: #007AFF;    /* iOS 藍 */
+    --success: #34C759;    /* iOS 綠 */
+    --error: #FF3B30;      /* iOS 紅 */
+    --warning: #FF9500;    /* iOS 橘 */
+    --bg: #F2F2F7;         /* 淺灰背景 */
+    --card-bg: #FFFFFF;
+    --text-main: #1C1C1E;
+    --text-sec: #8E8E93;
+    --border: #E5E5EA;
 }
 
-body { 
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; 
-    background: var(--bg); 
-    margin: 0; 
-    display: flex; 
-    justify-content: center; 
+/* 基礎設定 */
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background-color: var(--bg);
+    color: var(--text-main);
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    -webkit-tap-highlight-color: transparent; /* 移除手機點擊藍框 */
 }
 
-.container { 
-    width: 100%; 
-    max-width: 500px; 
-    padding: 20px; 
-    box-sizing: border-box; 
-    position: relative; 
+.container {
+    width: 100%;
+    max-width: 500px;
+    padding: 20px;
+    box-sizing: border-box;
+    position: relative;
 }
 
-/* 設定選單相關 */
-.settings-trigger { 
-    position: absolute; 
-    top: 20px; 
-    right: 20px; 
-    font-size: 1.5rem; 
-    background: none; 
-    border: none; 
-    cursor: pointer; 
-    z-index: 100; 
+/* 右上角設定按鈕 */
+.settings-trigger {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    font-size: 1.6rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    z-index: 100;
+    transition: transform 0.2s;
 }
 
-.settings-panel { 
-    display: none; 
-    position: absolute; 
-    top: 60px; 
-    right: 20px; 
-    background: white; 
-    border-radius: 12px; 
-    padding: 15px; 
-    box-shadow: 0 8px 20px rgba(0,0,0,0.15); 
-    z-index: 101; 
-    width: 220px; 
+.settings-trigger:active {
+    transform: rotate(30deg);
 }
 
-.settings-item select, .settings-item input {
-    font-size: 1rem;
-    padding: 5px;
-    border: 1px solid #DDD;
-    border-radius: 8px;
-    background: #FFF;
+/* 設定面板 */
+.settings-panel {
+    display: none;
+    position: absolute;
+    top: 65px;
+    right: 20px;
+    background: white;
+    border-radius: 16px;
+    padding: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+    z-index: 101;
+    width: 260px;
 }
 
 .settings-divider {
-    border-top: 1px solid #F2F2F7;
+    border-top: 1px solid var(--bg);
     margin: 15px 0;
 }
 
-/* iOS 開關樣式 */
-.switch { 
-    position: relative; 
-    display: inline-block; 
-    width: 46px; 
-    height: 26px; 
+.settings-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.95rem;
+    color: #333;
+}
+
+/* iOS 風格開關 (Switch) */
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 46px;
+    height: 26px;
 }
 
 .switch input { opacity: 0; width: 0; height: 0; }
 
-.slider { 
-    position: absolute; 
-    cursor: pointer; 
-    top: 0; left: 0; right: 0; bottom: 0; 
-    background-color: #ccc; 
-    transition: .4s; 
-    border-radius: 34px; 
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-color: #D1D1D6;
+    transition: .4s;
+    border-radius: 34px;
 }
 
-.slider:before { 
-    position: absolute; 
-    content: ""; 
-    height: 20px; 
-    width: 20px; 
-    left: 3px; 
-    bottom: 3px; 
-    background-color: white; 
-    transition: .4s; 
-    border-radius: 50%; 
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 20px; width: 20px;
+    left: 3px; bottom: 3px;
+    background-color: white;
+    transition: .4s;
+    border-radius: 50%;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
 }
 
 input:checked + .slider { background-color: var(--success); }
 input:checked + .slider:before { transform: translateX(20px); }
 
+/* 設定內的小型按鈕 */
+.small-btn {
+    flex: 1;
+    border: none;
+    border-radius: 10px;
+    padding: 12px 5px;
+    color: white;
+    font-size: 0.85rem;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+/* 下拉選單與輸入框 */
+select, input[type="number"] {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 4px 8px;
+    font-size: 0.9rem;
+    outline: none;
+}
+
 /* 題目卡片 */
-.card { 
-    background: white; 
-    border-radius: 15px; 
-    padding: 20px; 
-    box-shadow: 0 4px 15px rgba(0,0,0,0.05); 
-    min-height: 350px; 
-    margin-top: 20px; 
+.card {
+    background: var(--card-bg);
+    border-radius: 20px;
+    padding: 24px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+    margin-top: 30px;
+    min-height: 300px;
 }
 
-.header-row { 
-    display: flex; 
-    align-items: center; 
-    margin-bottom: 15px; 
-    flex-wrap: wrap; 
-    gap: 8px; 
+.header-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 18px;
+    gap: 8px;
 }
 
-.category-badge { 
-    background: var(--label-color); 
-    color: white; 
-    padding: 4px 10px; 
-    border-radius: 6px; 
-    font-size: 0.85rem; 
-    font-weight: bold; 
+.category-badge {
+    background: #5856D6; /* 紫色標籤 */
+    color: white;
+    padding: 4px 10px;
+    border-radius: 8px;
+    font-size: 0.8rem;
+    font-weight: bold;
 }
 
-.q-info { color: #8E8E93; font-size: 0.85rem; }
-
-.question { 
-    font-size: 1.2rem; 
-    font-weight: 600; 
-    line-height: 1.5; 
-    margin-bottom: 20px; 
-    color: #1C1C1E; 
+.q-info {
+    color: var(--text-sec);
+    font-size: 0.8rem;
 }
 
-/* 按鈕樣式 */
-.options { display: grid; gap: 12px; }
-
-.opt-btn { 
-    background: #FFFFFF; 
-    border: 2px solid #E5E5EA; 
-    border-radius: 12px; 
-    padding: 16px; 
-    text-align: left; 
-    font-size: 1rem; 
-    cursor: pointer; 
-    transition: all 0.2s; 
-    -webkit-tap-highlight-color: transparent; 
+.question {
+    font-size: 1.25rem;
+    font-weight: 600;
+    line-height: 1.6;
+    margin-bottom: 24px;
+    color: var(--text-main);
 }
 
-.opt-btn.correct { 
-    background: #E8F5E9; 
-    border-color: var(--success); 
-    color: var(--success); 
-    font-weight: bold; 
+/* 選項按鈕 */
+.options {
+    display: grid;
+    gap: 12px;
 }
 
-.opt-btn.wrong { 
-    background: #FFEBEE; 
-    border-color: var(--error); 
-    color: var(--error); 
+.opt-btn {
+    background: #F9F9FB;
+    border: 2px solid #F2F2F7;
+    border-radius: 14px;
+    padding: 16px;
+    text-align: left;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    color: #3A3A3C;
 }
 
-.next-btn { 
-    margin-top: 25px; 
-    width: 100%; 
-    padding: 16px; 
-    background: var(--primary); 
-    color: white; 
-    border: none; 
-    border-radius: 12px; 
-    font-size: 1.1rem; 
-    font-weight: 600; 
-    display: none; 
+.opt-btn:active {
+    transform: scale(0.98);
+    background: #E5E5EA;
 }
 
-/* 進度面板容器 */
-.progress-panel {
-    background: white; border-radius: 15px; padding: 20px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin-top: 20px;
-    margin-bottom: 30px;
+.opt-btn.correct {
+    background: #E8F5E9;
+    border-color: var(--success);
+    color: var(--success);
+    font-weight: bold;
 }
 
-.progress-title { 
-    font-weight: bold; margin-bottom: 15px; color: #1C1C1E; 
-    font-size: 1rem; border-bottom: 1px solid #F2F2F7; padding-bottom: 8px;
+.opt-btn.wrong {
+    background: #FFEBEE;
+    border-color: var(--error);
+    color: var(--error);
 }
 
-.progress-item { margin-bottom: 14px; }
-
-.progress-label { 
-    display: flex; justify-content: space-between; 
-    font-size: 0.8rem; color: #3A3A3C; margin-bottom: 5px; 
+/* 下一題按鈕 */
+.next-btn {
+    margin-top: 25px;
+    width: 100%;
+    padding: 16px;
+    background: var(--primary);
+    color: white;
+    border: none;
+    border-radius: 14px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0,122,255,0.3);
 }
 
-.progress-bar-bg { 
-    background: #E5E5EA; border-radius: 10px; height: 6px; 
-    width: 100%; overflow: hidden; 
+/* 下拉式進度展示 */
+.progress-details {
+    background: white;
+    border-radius: 16px;
+    margin: 20px 0 40px 0;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    overflow: hidden;
 }
 
-.progress-bar-fill { 
-    background: var(--success); height: 100%; width: 0%; 
-    transition: width 0.6s cubic-bezier(0.1, 0.7, 1.0, 0.1); 
+.progress-summary {
+    padding: 15px;
+    font-weight: bold;
+    color: var(--text-main);
+    cursor: pointer;
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 0.95rem;
 }
+
+.progress-summary::-webkit-details-marker { display: none; }
+
+.progress-summary::after {
+    content: ' ▾';
+    margin-left: 8px;
+    transition: transform 0.3s;
+}
+
+.progress-details[open] .progress-summary::after {
+    transform: rotate(180deg);
+}
+
+.progress-content {
+    padding: 0 20px 20px 20px;
+    border-top: 1px solid var(--bg);
+}
+
+.progress-item { margin-top: 15px; }
+
+.progress-label {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.85rem;
+    color: #3A3A3C;
+    margin-bottom: 6px;
+}
+
+.progress-bar-bg {
+    background: #E5E5EA;
+    border-radius: 10px;
+    height: 8px;
+    width: 100%;
+    overflow: hidden;
+}
+
+.progress-bar-fill {
+    background: var(--success);
+    height: 100%;
+    width: 0%;
+    transition: width 0.8s cubic-bezier(0.1, 0.7, 1.0, 0.1);
+}
+
+/* 模擬考結算回顧清單樣式 */
+#exam-review {
+    max-height: 450px;
+    overflow-y: auto;
+    padding-right: 5px;
+}
+
+/* 自定義捲軸 */
+#exam-review::-webkit-scrollbar { width: 5px; }
+#exam-review::-webkit-scrollbar-track { background: var(--bg); }
+#exam-review::-webkit-scrollbar-thumb { background: #CCC; border-radius: 10px; }
+
+.review-card {
+    margin-bottom: 15px;
+    padding: 14px;
+    border-radius: 12px;
+    text-align: left;
+    border-left: 6px solid #CCC;
+}
+
+.review-card.correct { background: #E8F5E9; border-left-color: var(--success); }
+.review-card.wrong { background: #FFEBEE; border-left-color: var(--error); }
