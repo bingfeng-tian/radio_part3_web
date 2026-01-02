@@ -7,18 +7,21 @@
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
+
 <div class="container">
     <button class="settings-trigger" onclick="toggleSettings()">⚙️</button>
     
     <div id="settingsPanel" class="settings-panel">
-        <div style="font-weight:bold; margin-bottom:12px; font-size:1rem; color:var(--primary);">功能選單</div>
+        <div style="font-weight:bold; margin-bottom:12px; font-size:1rem; color:var(--primary);">功能與設定</div>
+        
         <div style="display: flex; gap: 8px; margin-bottom: 15px;">
             <button class="small-btn" style="background: #FF9500;" onclick="window.location.href='exam.php?type=full'">📝 全真模考</button>
             <button class="small-btn" style="background: #5856D6;" onclick="window.location.href='exam.php?type=mini'">⚡ 小測驗</button>
         </div>
+
         <div class="settings-divider"></div>
-        <div id="categoryFilters" style="font-size: 0.85rem; color: #333; margin-bottom: 10px;">載入中...</div>
-        <div class="settings-divider"></div>
+        <div id="categoryFilters" style="font-size: 0.85rem; color: #333; margin-bottom: 15px;"></div>
+
         <div class="settings-item">
             <span>紀錄練習數據</span>
             <label class="switch"><input type="checkbox" id="recordModeToggle" onchange="saveSettings()"><span class="slider"></span></label>
@@ -27,10 +30,13 @@
             <span>挑戰弱點模式</span>
             <label class="switch"><input type="checkbox" id="weaknessModeToggle" onchange="saveSettings()"><span class="slider"></span></label>
         </div>
+
         <div class="settings-divider"></div>
         <div class="settings-item">
             <span>題數</span>
-            <select id="customCount" onchange="saveSettings()"><option value="10">10 題</option><option value="20">20 題</option><option value="35">35 題</option></select>
+            <select id="customCount" onchange="saveSettings()">
+                <option value="10">10 題</option><option value="20">20 題</option><option value="35">35 題</option>
+            </select>
             <span style="margin-left:10px;">時間</span>
             <input type="number" id="customTime" value="40" onchange="saveSettings()" style="width: 45px;">
         </div>
@@ -44,9 +50,11 @@
             <span id="session-score" style="margin-left:auto; font-size:0.8rem; color: #8E8E93;">對: 0 | 總: 0</span>
         </div>
         <div id="question" class="question">載入題目中...</div>
+        
         <div id="q-image-container" style="text-align: center; margin-bottom: 20px; display: none;">
-            <img id="q-image" src="" style="max-width: 100%; border-radius: 8px;">
+            <img id="q-image" src="" style="max-width: 100%; border-radius: 8px; border: 1px solid #eee;">
         </div>
+
         <div class="options">
             <button class="opt-btn" onclick="checkAns('A')" id="optA">A. </button>
             <button class="opt-btn" onclick="checkAns('B')" id="optB">B. </button>
@@ -58,9 +66,10 @@
 
     <details class="progress-details">
         <summary class="progress-summary">📊 點擊查看單元掌握進度</summary>
-        <div id="progressContent" class="progress-content"></div>
+        <div id="progressContent" class="progress-content">數據讀取中...</div>
     </details>
 </div>
+
 <script src="js/script.js"></script>
 </body>
 </html>

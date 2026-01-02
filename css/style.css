@@ -304,5 +304,27 @@ select, input[type="number"] {
     border-left: 6px solid #CCC;
 }
 
+/* 題目圖片容器 */
+.q-image-container {
+    text-align: center;
+    margin: 0 auto 20px auto;
+    width: 100%;
+    max-width: 100%;
+}
+
+.q-image-container img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 12px;
+    border: 1px solid #E5E5EA;
+    background-color: #fff;
+    box-sizing: border-box;
+}
+
+/* 讓 details 下拉選單更美觀 */
+.progress-details {
+    margin-bottom: 40px;
+}
+
 .review-card.correct { background: #E8F5E9; border-left-color: var(--success); }
 .review-card.wrong { background: #FFEBEE; border-left-color: var(--error); }

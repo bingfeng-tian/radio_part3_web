@@ -26,10 +26,15 @@ function renderQuestion() {
     document.getElementById('exam-progress').innerText = `題號 ${currentIndex + 1} / ${totalQuestions}`;
     document.getElementById('question').innerText = q.question;
     
+    // 處理測驗模式圖片
     const imgContainer = document.getElementById('q-image-container');
     const imgTag = document.getElementById('q-image');
-    if (q.image) { imgTag.src = `images/${q.image}`; imgContainer.style.display = 'block'; }
-    else { imgContainer.style.display = 'none'; }
+    if (q.image && q.image !== "") {
+        imgTag.src = `images/${q.image}`;
+        imgContainer.style.display = 'block';
+    } else {
+        imgContainer.style.display = 'none';
+    }
 
     document.getElementById('optA').innerText = "A. " + q.option_a;
     document.getElementById('optB').innerText = "B. " + q.option_b;
@@ -59,9 +64,9 @@ function finishExam() {
         const isCorrect = userAnswers[i] === q.answer;
         if (isCorrect) correctCount++;
         reviewHtml += `
-            <div style="margin-bottom:15px; padding:12px; border-radius:10px; border-left:6px solid ${isCorrect ? '#34C759':'#FF3B30'}; background:${isCorrect ? '#E8F5E9':'#FFEBEE'};">
+            <div class="review-card ${isCorrect ? 'correct' : 'wrong'}">
                 <div style="font-weight:bold; margin-bottom:5px;">${i+1}. ${q.question}</div>
-                ${q.image ? `<img src="images/${q.image}" style="max-width:100px; display:block; margin:5px 0;">` : ''}
+                ${q.image ? `<img src="images/${q.image}" style="max-width:120px; display:block; margin:8px 0; border:1px solid #ddd;">` : ''}
                 <div style="font-size:0.9rem;">您的答案: ${userAnswers[i] || '未答'} | 正確: ${q.answer}</div>
             </div>`;
     });
