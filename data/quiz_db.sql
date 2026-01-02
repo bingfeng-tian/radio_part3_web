@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- 主機： 127.0.0.1
--- 產生時間： 2026-01-02 21:38:41
+-- 產生時間： 2026-01-02 21:38:03
 -- 伺服器版本： 10.4.32-MariaDB
 -- PHP 版本： 8.0.30
 
@@ -617,6 +617,20 @@ INSERT INTO `questions` (`id`, `q_num`, `category`, `question`, `image`, `option
 (569, '17', '射頻干擾的預防與排除', '解決業餘無線電干擾有線電視的第一步是什麼？', NULL, '在電視天線輸入端添加一個低通濾波器', '在電視天線輸入端添加一個高通濾波器', '將前置放大器添加到電視天線輸入', '確保正確安裝所有電視同軸連接器', 'D'),
 (570, '18', '射頻干擾的預防與排除', '使用以下哪種方法來定位雜訊干擾或人為干擾源？', NULL, '迴聲定位', '杜卜勒雷達', '無線電測向', '鎖相', 'C');
 
+-- --------------------------------------------------------
+
+--
+-- 資料表結構 `question_stats`
+--
+
+CREATE TABLE `question_stats` (
+  `id` int(11) NOT NULL,
+  `question_id` int(11) NOT NULL,
+  `correct_count` int(11) DEFAULT 0,
+  `wrong_count` int(11) DEFAULT 0,
+  `last_updated` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
 --
 -- 已傾印資料表的索引
 --
@@ -628,6 +642,13 @@ ALTER TABLE `questions`
   ADD PRIMARY KEY (`id`);
 
 --
+-- 資料表索引 `question_stats`
+--
+ALTER TABLE `question_stats`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `unique_question` (`question_id`);
+
+--
 -- 在傾印的資料表使用自動遞增(AUTO_INCREMENT)
 --
 
@@ -636,6 +657,12 @@ ALTER TABLE `questions`
 --
 ALTER TABLE `questions`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=571;
+
+--
+-- 使用資料表自動遞增(AUTO_INCREMENT) `question_stats`
+--
+ALTER TABLE `question_stats`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
