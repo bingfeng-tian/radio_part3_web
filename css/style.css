@@ -1,0 +1,201 @@
+/**
+ * 三等無線電刷題站 - 全域樣式
+ */
+
+:root { 
+    --primary: #007AFF; 
+    --success: #34C759; 
+    --error: #FF3B30; 
+    --bg: #F2F2F7;
+    --label-color: #5856D6; 
+}
+
+body { 
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; 
+    background: var(--bg); 
+    margin: 0; 
+    display: flex; 
+    justify-content: center; 
+}
+
+.container { 
+    width: 100%; 
+    max-width: 500px; 
+    padding: 20px; 
+    box-sizing: border-box; 
+    position: relative; 
+}
+
+/* 設定選單相關 */
+.settings-trigger { 
+    position: absolute; 
+    top: 20px; 
+    right: 20px; 
+    font-size: 1.5rem; 
+    background: none; 
+    border: none; 
+    cursor: pointer; 
+    z-index: 100; 
+}
+
+.settings-panel { 
+    display: none; 
+    position: absolute; 
+    top: 60px; 
+    right: 20px; 
+    background: white; 
+    border-radius: 12px; 
+    padding: 15px; 
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15); 
+    z-index: 101; 
+    width: 220px; 
+}
+
+.settings-item { 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+    font-size: 0.95rem; 
+    color: #333; 
+}
+
+/* iOS 開關樣式 */
+.switch { 
+    position: relative; 
+    display: inline-block; 
+    width: 46px; 
+    height: 26px; 
+}
+
+.switch input { opacity: 0; width: 0; height: 0; }
+
+.slider { 
+    position: absolute; 
+    cursor: pointer; 
+    top: 0; left: 0; right: 0; bottom: 0; 
+    background-color: #ccc; 
+    transition: .4s; 
+    border-radius: 34px; 
+}
+
+.slider:before { 
+    position: absolute; 
+    content: ""; 
+    height: 20px; 
+    width: 20px; 
+    left: 3px; 
+    bottom: 3px; 
+    background-color: white; 
+    transition: .4s; 
+    border-radius: 50%; 
+}
+
+input:checked + .slider { background-color: var(--success); }
+input:checked + .slider:before { transform: translateX(20px); }
+
+/* 題目卡片 */
+.card { 
+    background: white; 
+    border-radius: 15px; 
+    padding: 20px; 
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05); 
+    min-height: 350px; 
+    margin-top: 20px; 
+}
+
+.header-row { 
+    display: flex; 
+    align-items: center; 
+    margin-bottom: 15px; 
+    flex-wrap: wrap; 
+    gap: 8px; 
+}
+
+.category-badge { 
+    background: var(--label-color); 
+    color: white; 
+    padding: 4px 10px; 
+    border-radius: 6px; 
+    font-size: 0.85rem; 
+    font-weight: bold; 
+}
+
+.q-info { color: #8E8E93; font-size: 0.85rem; }
+
+.question { 
+    font-size: 1.2rem; 
+    font-weight: 600; 
+    line-height: 1.5; 
+    margin-bottom: 20px; 
+    color: #1C1C1E; 
+}
+
+/* 按鈕樣式 */
+.options { display: grid; gap: 12px; }
+
+.opt-btn { 
+    background: #FFFFFF; 
+    border: 2px solid #E5E5EA; 
+    border-radius: 12px; 
+    padding: 16px; 
+    text-align: left; 
+    font-size: 1rem; 
+    cursor: pointer; 
+    transition: all 0.2s; 
+    -webkit-tap-highlight-color: transparent; 
+}
+
+.opt-btn.correct { 
+    background: #E8F5E9; 
+    border-color: var(--success); 
+    color: var(--success); 
+    font-weight: bold; 
+}
+
+.opt-btn.wrong { 
+    background: #FFEBEE; 
+    border-color: var(--error); 
+    color: var(--error); 
+}
+
+.next-btn { 
+    margin-top: 25px; 
+    width: 100%; 
+    padding: 16px; 
+    background: var(--primary); 
+    color: white; 
+    border: none; 
+    border-radius: 12px; 
+    font-size: 1.1rem; 
+    font-weight: 600; 
+    display: none; 
+}
+
+/* 進度面板容器 */
+.progress-panel {
+    background: white; border-radius: 15px; padding: 20px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin-top: 20px;
+    margin-bottom: 30px;
+}
+
+.progress-title { 
+    font-weight: bold; margin-bottom: 15px; color: #1C1C1E; 
+    font-size: 1rem; border-bottom: 1px solid #F2F2F7; padding-bottom: 8px;
+}
+
+.progress-item { margin-bottom: 14px; }
+
+.progress-label { 
+    display: flex; justify-content: space-between; 
+    font-size: 0.8rem; color: #3A3A3C; margin-bottom: 5px; 
+}
+
+.progress-bar-bg { 
+    background: #E5E5EA; border-radius: 10px; height: 6px; 
+    width: 100%; overflow: hidden; 
+}
+
+.progress-bar-fill { 
+    background: var(--success); height: 100%; width: 0%; 
+    transition: width 0.6s cubic-bezier(0.1, 0.7, 1.0, 0.1); 
+}
