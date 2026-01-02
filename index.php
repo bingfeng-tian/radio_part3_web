@@ -12,46 +12,44 @@
     <button class="settings-trigger" onclick="toggleSettings()">⚙️</button>
     
     <div id="settingsPanel" class="settings-panel">
-        <div style="font-weight:bold; margin-bottom:10px; font-size:0.9rem;">自訂練習範圍</div>
-        <div id="categoryFilters" style="font-size: 0.8rem; color: #666; margin-bottom: 15px;">
+        <div style="font-weight:bold; margin-bottom:12px; font-size:1rem; color:var(--primary);">功能選單</div>
+        
+        <div style="display: flex; gap: 8px; margin-bottom: 15px;">
+            <button class="small-btn" style="background: #FF9500;" onclick="window.location.href='exam.php?type=full'">📝 全真模考</button>
+            <button class="small-btn" style="background: #5856D6;" onclick="window.location.href='exam.php?type=mini'">⚡ 小測驗</button>
         </div>
 
-        <div class="settings-divider" style="border-top: 1px solid #EEE; margin: 15px 0;"></div>
-        <div style="font-weight:bold; margin-bottom:10px; font-size:0.9rem;">自訂測驗設定</div>
-
-        <div class="settings-item">
-            <span>測驗題數</span>
-            <select id="customCount" onchange="saveSettings()" style="padding: 5px; border-radius: 5px;">
-                <option value="10">10 題</option>
-                <option value="20">20 題</option>
-                <option value="35">35 題</option>
-                <option value="50">50 題</option>
-            </select>
+        <div class="settings-divider"></div>
+        
+        <div id="categoryFilters" style="font-size: 0.85rem; color: #333; margin-bottom: 10px;">
+            載入分類中...
         </div>
 
-        <div class="settings-item" style="margin-top: 10px;">
-            <span>時間限制 (分)</span>
-            <input type="number" id="customTime" value="40" onchange="saveSettings()" style="width: 50px; padding: 5px; border-radius: 5px; border: 1px solid #CCC;">
-        </div>
-
-        <button class="next-btn" style="display: block; background: var(--success); margin-top: 15px; font-size: 0.9rem; padding: 10px;" onclick="startCustomExam()">
-            🚀 開始自訂範圍測驗
-        </button>
+        <div class="settings-divider"></div>
 
         <div class="settings-item">
             <span>紀錄練習數據</span>
-            <label class="switch">
-                <input type="checkbox" id="recordModeToggle" onchange="saveSettings()">
-                <span class="slider"></span>
-            </label>
+            <label class="switch"><input type="checkbox" id="recordModeToggle" onchange="saveSettings()"><span class="slider"></span></label>
         </div>
-        <div class="settings-item" style="margin-top: 15px;">
+        <div class="settings-item" style="margin-top: 10px;">
             <span>挑戰弱點模式</span>
-            <label class="switch">
-                <input type="checkbox" id="weaknessModeToggle" onchange="saveSettings()">
-                <span class="slider"></span>
-            </label>
+            <label class="switch"><input type="checkbox" id="weaknessModeToggle" onchange="saveSettings()"><span class="slider"></span></label>
         </div>
+
+        <div class="settings-divider"></div>
+
+        <div class="settings-item">
+            <span>題數</span>
+            <select id="customCount" onchange="saveSettings()">
+                <option value="10">10 題</option><option value="20">20 題</option><option value="35">35 題</option>
+            </select>
+            <span style="margin-left:10px;">時間</span>
+            <input type="number" id="customTime" value="40" onchange="saveSettings()" style="width: 45px;">
+        </div>
+
+        <button class="next-btn" style="display: block; background: var(--success); margin-top: 15px; font-size: 0.9rem; padding: 10px;" onclick="startCustomExam()">
+            🚀 開始自訂測驗
+        </button>
     </div>
 
     <div class="card">
@@ -70,10 +68,11 @@
         <button id="next-btn" class="next-btn" onclick="fetchNext()">下一題</button>
     </div>
 
-    <div class="progress-panel">
-        <div class="progress-title">單元掌握度 (至少答對一次)</div>
-        <div id="progressContent">數據讀取中...</div>
-    </div>
+    <details class="progress-details">
+        <summary class="progress-summary">📊 點擊查看單元掌握進度</summary>
+        <div id="progressContent" class="progress-content">
+            </div>
+    </details>
 </div>
 
 <script src="js/script.js"></script>

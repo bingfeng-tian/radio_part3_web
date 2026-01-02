@@ -1,24 +1,24 @@
 /**
  * js/exam.js
  */
+let totalQuestions = 0; 
+
+// initExam 函數內部的 API 判斷邏輯
 async function initExam() {
     const urlParams = new URLSearchParams(window.location.search);
     const type = urlParams.get('type') || 'full';
-    
     let apiUrl = '';
-    
+
     if (type === 'custom') {
         const cats = urlParams.get('cats');
         const limit = urlParams.get('limit');
-        // 自訂時間 (分鐘轉秒)
         timeLeft = parseInt(urlParams.get('time')) * 60; 
         apiUrl = `get_custom_exam.php?cats=${encodeURIComponent(cats)}&limit=${limit}`;
     } else {
-        // 預設全真模考
         apiUrl = (type === 'mini') ? 'get_exam.php?type=mini' : 'get_exam.php?type=full';
-        timeLeft = 40 * 60; // 預設 40 分鐘
+        timeLeft = 40 * 60; 
     }
-
+    
     try {
         const res = await fetch(apiUrl);
         examQuestions = await res.json();

@@ -51,12 +51,17 @@ body {
     width: 220px; 
 }
 
-.settings-item { 
-    display: flex; 
-    justify-content: space-between; 
-    align-items: center; 
-    font-size: 0.95rem; 
-    color: #333; 
+.settings-item select, .settings-item input {
+    font-size: 1rem;
+    padding: 5px;
+    border: 1px solid #DDD;
+    border-radius: 8px;
+    background: #FFF;
+}
+
+.settings-divider {
+    border-top: 1px solid #F2F2F7;
+    margin: 15px 0;
 }
 
 /* iOS 開關樣式 */
