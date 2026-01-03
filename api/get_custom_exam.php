@@ -1,5 +1,5 @@
 <?php
-include 'db.php';
+require_once '../config/db.php';
 
 $cats = isset($_GET['cats']) ? $_GET['cats'] : '';
 $limit = isset($_GET['limit']) ? intval($_GET['limit']) : 10;

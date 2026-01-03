@@ -1,5 +1,5 @@
 <?php
-include 'db.php';
+require_once '../config/db.php';
 
 $qid = isset($_POST['qid']) ? intval($_POST['qid']) : 0;
 $status = isset($_POST['status']) ? $_POST['status'] : '';

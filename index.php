@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>三等無線電刷題站</title>
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
 
@@ -35,7 +35,7 @@
         <div class="settings-item">
             <span>題數</span>
             <select id="customCount" onchange="saveSettings()">
-                <option value="10">10 題</option><option value="20">20 題</option><option value="35">35 題</option>
+                <option value="5">5 題</option><option value="10">10 題</option><option value="20">20 題</option><option value="35">35 題</option>
             </select>
             <span style="margin-left:10px;">時間</span>
             <input type="number" id="customTime" value="40" onchange="saveSettings()" style="width: 45px;">
@@ -74,6 +74,6 @@
     </details>
 </div>
 
-<script src="js/script.js"></script>
+<script src="assets/js/script.js"></script>
 </body>
 </html>

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>三等無線電測驗</title>
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
 
@@ -48,6 +48,6 @@
     </div>
 </div>
 
-<script src="js/exam.js"></script>
+<script src="assets/js/exam.js"></script>
 </body>
 </html>

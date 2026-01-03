@@ -1,5 +1,5 @@
 <?php
-include 'db.php';
+require_once '../config/db.php';  
 
 $mode = isset($_GET['mode']) ? $_GET['mode'] : 'all';
 $cats = isset($_GET['cats']) ? $_GET['cats'] : '';

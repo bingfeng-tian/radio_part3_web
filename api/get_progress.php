@@ -1,5 +1,5 @@
 <?php
-include 'db.php';
+require_once '../config/db.php';
 
 // 官方各單元總題數
 $totals = [

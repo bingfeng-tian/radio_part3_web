@@ -5,6 +5,57 @@ let currentQuestionData = {};
 
 const allCategories = ['無線電規章與相關法規', '無線電通訊方法', '無線電系統原理', '無線電相關安全防護', '電磁相容性技術', '射頻干擾的預防與排除'];
 
+/**
+ * 通用複製函式 (支援手機與電腦)
+ */
+function copyToClipboard(text) {
+    // 優先嘗試現代 API (需 HTTPS)
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(() => {
+            alert("✅ 題目解析已複製！\n您可以自行切換至 AI 工具貼上。");
+        }).catch(() => {
+            fallbackCopy(text);
+        });
+    } else {
+        fallbackCopy(text);
+    }
+}
+
+function fallbackCopy(text) {
+    const textArea = document.createElement("textarea");
+    textArea.value = text;
+    // 避免手機畫面跳動
+    textArea.style.position = "fixed";
+    textArea.style.left = "-9999px";
+    textArea.style.top = "0";
+    textArea.setAttribute("readonly", "");
+    document.body.appendChild(textArea);
+
+    // iOS 特殊處理
+    if (navigator.userAgent.match(/ipad|iphone/i)) {
+        const range = document.createRange();
+        range.selectNodeContents(textArea);
+        const selection = window.getSelection();
+        selection.removeAllRanges();
+        selection.addRange(range);
+        textArea.setSelectionRange(0, 999999);
+    } else {
+        textArea.select();
+    }
+
+    try {
+        const successful = document.execCommand('copy');
+        if (successful) {
+            alert("✅ 題目解析已複製！ (相容模式)");
+        } else {
+            alert("❌ 複製失敗，請手動選取文字複製。");
+        }
+    } catch (err) {
+        alert("❌ 瀏覽器不支援複製");
+    }
+    document.body.removeChild(textArea);
+}
+
 function loadSettings() {
     document.getElementById('recordModeToggle').checked = (localStorage.getItem('isRecordMode') !== 'false');
     document.getElementById('weaknessModeToggle').checked = (localStorage.getItem('isWeaknessMode') === 'true');
@@ -47,7 +98,8 @@ async function fetchNext() {
     });
 
     try {
-        const res = await fetch(`get_question.php?${params.toString()}`);
+        // *** 修改點：路徑改為 api/get_question.php ***
+        const res = await fetch(`api/get_question.php?${params.toString()}`);
         const data = await res.json();
         
         if (data.status === "empty") {
@@ -67,7 +119,8 @@ async function fetchNext() {
         const imgContainer = document.getElementById('q-image-container');
         const imgTag = document.getElementById('q-image');
         if (data.image && data.image.trim() !== "") {
-            imgTag.src = `images/${data.image}`;
+            // 修正點：加上 assets/ 前綴
+            imgTag.src = `assets/images/${data.image}`; 
             imgContainer.style.display = 'block';
         } else {
             imgContainer.style.display = 'none';
@@ -101,7 +154,9 @@ function checkAns(choice) {
         const formData = new FormData();
         formData.append('qid', currentId);
         formData.append('status', isCorrect ? 'correct' : 'wrong');
-        fetch('record_answer.php', { method: 'POST', body: formData }).then(() => updateProgressUI());
+        
+        // *** 修改點：路徑改為 api/record_answer.php ***
+        fetch('api/record_answer.php', { method: 'POST', body: formData }).then(() => updateProgressUI());
     }
     
     // 答題後顯示按鈕
@@ -109,7 +164,7 @@ function checkAns(choice) {
     document.getElementById('ai-btn').style.display = 'block';
 }
 
-// 新功能：複製並開啟 ChatGPT
+// 複製並詢問 AI (不跳轉)
 function copyAndAskAI_Single() {
     const prompt = `我正在練習業餘無線電題目，請幫我解析這題：
 
@@ -125,49 +180,7 @@ D. ${currentQuestionData.option_d}
 
 請告訴我為什麼選 ${currentQuestionData.answer}，並解釋相關的無線電原理或法規觀念。`;
 
-    // 直接呼叫複製，不再跳轉
     copyToClipboard(prompt);
-}
-
-// 通用複製函式：同時支援電腦與手機 (包含無 HTTPS 環境)
-function copyToClipboard(text) {
-    // 嘗試 1: 使用現代 API (HTTPS 環境下較穩)
-    if (navigator.clipboard && navigator.clipboard.writeText) {
-        navigator.clipboard.writeText(text).then(() => {
-            alert("✅ 題目解析已複製！\n您可以自行切換至 AI 工具貼上。");
-        }).catch(err => {
-            console.warn("Clipboard API 失敗，嘗試舊版方法...", err);
-            fallbackCopy(text);
-        });
-    } else {
-        // 嘗試 2: 舊版方法 (支援 HTTP / 手機)
-        fallbackCopy(text);
-    }
-}
-
-function fallbackCopy(text) {
-    try {
-        const textArea = document.createElement("textarea");
-        textArea.value = text;
-        // 設定位置避免手機螢幕亂跳
-        textArea.style.position = "fixed";
-        textArea.style.left = "-9999px";
-        document.body.appendChild(textArea);
-        textArea.focus();
-        textArea.select();
-        
-        const successful = document.execCommand('copy');
-        document.body.removeChild(textArea);
-        
-        if (successful) {
-            alert("✅ 題目解析已複製！\n您可以自行切換至 AI 工具貼上。");
-        } else {
-            alert("❌ 複製失敗，請手動選取文字複製。");
-        }
-    } catch (err) {
-        console.error("複製功能異常", err);
-        alert("❌ 複製失敗");
-    }
 }
 
 function toggleSettings() {
@@ -187,7 +200,8 @@ function startCustomExam() {
 
 async function updateProgressUI() {
     try {
-        const res = await fetch('get_progress.php');
+        // *** 修改點：路徑改為 api/get_progress.php ***
+        const res = await fetch('api/get_progress.php');
         const data = await res.json();
         const container = document.getElementById('progressContent');
         if(container) {
