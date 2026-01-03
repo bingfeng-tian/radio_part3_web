@@ -176,17 +176,112 @@ function finishExam() {
     }
 }
 
+/**
+ * 1. 核心複製功能：結合現代 API 與舊版相容模式
+ */
+function copyToClipboard(text) {
+    // 優先嘗試現代 API (需 HTTPS)
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(() => {
+            alert("✅ 題目已複製！\n您可以自行切換至 AI 貼上。");
+        }).catch(() => {
+            // 若失敗 (例如非 HTTPS)，轉用 Fallback
+            fallbackCopy(text);
+        });
+    } else {
+        // 舊版瀏覽器或 HTTP 環境
+        fallbackCopy(text);
+    }
+}
+
+/**
+ * 2. 強力舊版複製 (針對手機優化)
+ */
+function fallbackCopy(text) {
+    const textArea = document.createElement("textarea");
+    textArea.value = text;
+    
+    // 避免手機鍵盤彈出與畫面跳動
+    textArea.style.position = "fixed";
+    textArea.style.left = "-9999px";
+    textArea.style.top = "0";
+    textArea.setAttribute("readonly", ""); 
+    document.body.appendChild(textArea);
+
+    // 針對 iOS (iPhone/iPad) 的特殊選取處理
+    if (navigator.userAgent.match(/ipad|iphone/i)) {
+        const range = document.createRange();
+        range.selectNodeContents(textArea);
+        const selection = window.getSelection();
+        selection.removeAllRanges();
+        selection.addRange(range);
+        textArea.setSelectionRange(0, 999999);
+    } else {
+        textArea.select();
+    }
+
+    try {
+        const successful = document.execCommand('copy');
+        if (successful) {
+            alert("✅ 題目已複製！ (相容模式)");
+        } else {
+            alert("❌ 複製失敗，請長按文字手動複製。");
+        }
+    } catch (err) {
+        alert("❌ 瀏覽器不支援複製功能");
+    }
+
+    document.body.removeChild(textArea);
+}
+
+/**
+ * 3. 測驗頁面的按鈕觸發函式 (不跳轉)
+ */
 function copyAndAskAI_Exam(q, a, b, c, d, userAns, correctAns) {
     const prompt = `我正在檢討無線電考試錯題，請幫我解析：\n\n題目：${q}\n選項：\nA. ${a}\nB. ${b}\nC. ${c}\nD. ${d}\n\n正確答案：${correctAns}\n我的選擇：${userAns}\n\n請解釋為什麼答案是 ${correctAns}，以及為什麼我選的答案不正確。`;
 
-    navigator.clipboard.writeText(prompt).then(() => {
-        if(confirm("題目資料已複製！\n是否開啟 ChatGPT？")) {
-            window.open('https://chatgpt.com/', '_blank');
-        }
-    }).catch(err => {
-        console.error(err);
-        alert("複製失敗");
-    });
+    copyToClipboard(prompt);
+}
+
+// 通用複製函式：同時支援電腦與手機 (包含無 HTTPS 環境)
+function copyToClipboardRobust(text, callback) {
+    // 嘗試 1: 使用現代 API (需要 HTTPS)
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(() => {
+            if (callback) callback(true);
+        }).catch(err => {
+            console.warn("Clipboard API failed, trying fallback...", err);
+            fallbackCopy(text, callback);
+        });
+    } else {
+        // 嘗試 2: 使用舊版 Fallback (支援 HTTP)
+        fallbackCopy(text, callback);
+    }
+}
+
+// 舊版複製方法 (透過隱藏的 textarea)
+function fallbackCopy(text, callback) {
+    try {
+        const textArea = document.createElement("textarea");
+        textArea.value = text;
+        
+        // 確保手機上不會跳出鍵盤或捲動
+        textArea.style.position = "fixed";
+        textArea.style.left = "-9999px";
+        textArea.style.top = "0";
+        document.body.appendChild(textArea);
+        
+        textArea.focus();
+        textArea.select();
+        
+        const successful = document.execCommand('copy');
+        document.body.removeChild(textArea);
+        
+        if (callback) callback(successful);
+    } catch (err) {
+        console.error("Fallback copy failed", err);
+        if (callback) callback(false);
+    }
 }
 
 document.addEventListener('DOMContentLoaded', initExam);

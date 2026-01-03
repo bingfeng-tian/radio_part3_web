@@ -125,14 +125,49 @@ D. ${currentQuestionData.option_d}
 
 請告訴我為什麼選 ${currentQuestionData.answer}，並解釋相關的無線電原理或法規觀念。`;
 
-    navigator.clipboard.writeText(prompt).then(() => {
-        if(confirm("題目與解析要求已複製！\n是否前往 ChatGPT 貼上詢問？")) {
-            window.open('https://chatgpt.com/', '_blank');
+    // 直接呼叫複製，不再跳轉
+    copyToClipboard(prompt);
+}
+
+// 通用複製函式：同時支援電腦與手機 (包含無 HTTPS 環境)
+function copyToClipboard(text) {
+    // 嘗試 1: 使用現代 API (HTTPS 環境下較穩)
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(() => {
+            alert("✅ 題目解析已複製！\n您可以自行切換至 AI 工具貼上。");
+        }).catch(err => {
+            console.warn("Clipboard API 失敗，嘗試舊版方法...", err);
+            fallbackCopy(text);
+        });
+    } else {
+        // 嘗試 2: 舊版方法 (支援 HTTP / 手機)
+        fallbackCopy(text);
+    }
+}
+
+function fallbackCopy(text) {
+    try {
+        const textArea = document.createElement("textarea");
+        textArea.value = text;
+        // 設定位置避免手機螢幕亂跳
+        textArea.style.position = "fixed";
+        textArea.style.left = "-9999px";
+        document.body.appendChild(textArea);
+        textArea.focus();
+        textArea.select();
+        
+        const successful = document.execCommand('copy');
+        document.body.removeChild(textArea);
+        
+        if (successful) {
+            alert("✅ 題目解析已複製！\n您可以自行切換至 AI 工具貼上。");
+        } else {
+            alert("❌ 複製失敗，請手動選取文字複製。");
         }
-    }).catch(err => {
-        console.error('複製失敗:', err);
-        alert("複製失敗，請手動複製。");
-    });
+    } catch (err) {
+        console.error("複製功能異常", err);
+        alert("❌ 複製失敗");
+    }
 }
 
 function toggleSettings() {
