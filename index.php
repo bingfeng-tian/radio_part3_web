@@ -61,7 +61,11 @@
             <button class="opt-btn" onclick="checkAns('C')" id="optC">C. </button>
             <button class="opt-btn" onclick="checkAns('D')" id="optD">D. </button>
         </div>
-        <button id="next-btn" class="next-btn" onclick="fetchNext()" style="display:none;">下一題</button>
+
+        <div style="display: flex; gap: 10px; margin-top: 20px;">
+            <button id="ai-btn" class="ai-btn" onclick="copyAndAskAI_Single()" style="display:none; background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; border: none; border-radius: 14px; padding: 16px; font-weight: bold; flex: 1; cursor: pointer;">📋 複製題目問 AI</button>
+            <button id="next-btn" class="next-btn" onclick="fetchNext()" style="display:none; margin-top:0; flex: 1;">下一題</button>
+        </div>
     </div>
 
     <details class="progress-details">

@@ -7,16 +7,18 @@
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
+
 <div class="container">
-    <div class="header-row" style="justify-content: space-between; background: white; padding: 15px; border-radius: 12px; margin-bottom: 20px;">
-        <span id="timer" style="font-weight: bold; color: var(--error);">--:--</span>
-        <span id="exam-progress" style="font-weight: bold; color: var(--primary);">題號 -- / --</span>
+    <div class="header-row" style="justify-content: space-between; background: white; padding: 15px; border-radius: 12px; margin-bottom: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
+        <span id="timer" style="font-weight: bold; color: var(--error); font-size: 1.1rem;">--:--</span>
+        <span id="exam-progress" style="font-weight: bold; color: var(--primary); font-size: 1rem;">題號 -- / --</span>
     </div>
 
     <div id="exam-card" class="card">
         <div class="header-row">
             <span id="category" class="category-badge">載入中</span>
         </div>
+        
         <div id="question" class="question">載入考卷中...</div>
         
         <div id="q-image-container" style="text-align: center; margin-bottom: 20px; display: none;">
@@ -24,23 +26,28 @@
         </div>
 
         <div class="options">
-            <button class="opt-btn" onclick="submitAns('A')" id="optA">A.</button>
-            <button class="opt-btn" onclick="submitAns('B')" id="optB">B.</button>
-            <button class="opt-btn" onclick="submitAns('C')" id="optC">C.</button>
-            <button class="opt-btn" onclick="submitAns('D')" id="optD">D.</button>
+            <button class="opt-btn" onclick="selectOption('A')" id="optA">A.</button>
+            <button class="opt-btn" onclick="selectOption('B')" id="optB">B.</button>
+            <button class="opt-btn" onclick="selectOption('C')" id="optC">C.</button>
+            <button class="opt-btn" onclick="selectOption('D')" id="optD">D.</button>
         </div>
     </div>
 
     <div id="result-panel" class="card" style="display: none; text-align: center;">
-        <h2 id="result-status">測驗結束</h2>
-        <div id="result-score" style="font-size: 3rem; font-weight: bold; margin: 10px 0; color: var(--primary);">0 / 0</div>
-        <div id="exam-review" style="text-align: left; margin-top: 30px; border-top: 1px solid #eee; padding-top: 20px;">
-            <h3 style="margin-bottom: 15px;">📜 題目回顧</h3>
+        <h2 id="result-status" style="margin-bottom: 10px;">測驗結束</h2>
+        
+        <div style="font-size: 1rem; color: #666;">您的得分</div>
+        <div id="result-score" style="font-size: 3.5rem; font-weight: bold; margin: 5px 0 20px 0; color: var(--primary);">0 / 0</div>
+        
+        <div id="exam-review" style="text-align: left; margin-top: 20px; border-top: 1px solid #eee; padding-top: 20px;">
+            <h3 style="margin-bottom: 15px; color: #333;">📜 答題回顧</h3>
             <div id="review-list"></div>
         </div>
-        <button class="next-btn" onclick="window.location.href='index.php'">回到主頁</button>
+        
+        <button class="next-btn" style="background-color: #5856D6; margin-top: 20px;" onclick="window.location.href='index.php'">🏠 回到主頁</button>
     </div>
 </div>
+
 <script src="js/exam.js"></script>
 </body>
 </html>

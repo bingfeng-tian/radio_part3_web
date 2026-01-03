@@ -1,5 +1,8 @@
 let currentAns = "", currentId = 0, isAnswered = false;
 let sessionCorrect = 0, sessionTotal = 0;
+// 新增：暫存當前題目詳細資料，給 AI 用
+let currentQuestionData = {}; 
+
 const allCategories = ['無線電規章與相關法規', '無線電通訊方法', '無線電系統原理', '無線電相關安全防護', '電磁相容性技術', '射頻干擾的預防與排除'];
 
 function loadSettings() {
@@ -34,6 +37,7 @@ function saveSettings() {
 async function fetchNext() {
     isAnswered = false;
     document.getElementById('next-btn').style.display = 'none';
+    document.getElementById('ai-btn').style.display = 'none'; // 換題時隱藏 AI 按鈕
     document.querySelectorAll('.opt-btn').forEach(b => { b.className = 'opt-btn'; b.disabled = false; });
     
     const cats = JSON.parse(localStorage.getItem('selectedCats')) || allCategories;
@@ -50,15 +54,16 @@ async function fetchNext() {
             alert(data.message || "無題目資料"); return;
         }
 
+        // 存下來給 AI 用
+        currentQuestionData = data;
+
         currentId = data.id; 
         currentAns = data.answer;
         document.getElementById('category').innerText = data.category;
         document.getElementById('q-num').innerText = `題號: ${data.q_num}`;
-        
-        // 顯示題目與 (對/錯) 次數
         document.getElementById('question').innerText = `${data.question} (${data.correct_count || 0}/${data.wrong_count || 0})`;
         
-        // 圖片處理邏輯
+        // 圖片處理
         const imgContainer = document.getElementById('q-image-container');
         const imgTag = document.getElementById('q-image');
         if (data.image && data.image.trim() !== "") {
@@ -78,6 +83,10 @@ async function fetchNext() {
 function checkAns(choice) {
     if (isAnswered) return;
     isAnswered = true; sessionTotal++;
+    
+    // 紀錄使用者選了什麼
+    currentQuestionData.userChoice = choice;
+
     const isCorrect = (choice === currentAns);
     const mapping = { 'A': 'optA', 'B': 'optB', 'C': 'optC', 'D': 'optD' };
     
@@ -94,7 +103,36 @@ function checkAns(choice) {
         formData.append('status', isCorrect ? 'correct' : 'wrong');
         fetch('record_answer.php', { method: 'POST', body: formData }).then(() => updateProgressUI());
     }
+    
+    // 答題後顯示按鈕
     document.getElementById('next-btn').style.display = 'block';
+    document.getElementById('ai-btn').style.display = 'block';
+}
+
+// 新功能：複製並開啟 ChatGPT
+function copyAndAskAI_Single() {
+    const prompt = `我正在練習業餘無線電題目，請幫我解析這題：
+
+題目：${currentQuestionData.question}
+選項：
+A. ${currentQuestionData.option_a}
+B. ${currentQuestionData.option_b}
+C. ${currentQuestionData.option_c}
+D. ${currentQuestionData.option_d}
+
+正確答案：${currentQuestionData.answer}
+我的選擇：${currentQuestionData.userChoice}
+
+請告訴我為什麼選 ${currentQuestionData.answer}，並解釋相關的無線電原理或法規觀念。`;
+
+    navigator.clipboard.writeText(prompt).then(() => {
+        if(confirm("題目與解析要求已複製！\n是否前往 ChatGPT 貼上詢問？")) {
+            window.open('https://chatgpt.com/', '_blank');
+        }
+    }).catch(err => {
+        console.error('複製失敗:', err);
+        alert("複製失敗，請手動複製。");
+    });
 }
 
 function toggleSettings() {
