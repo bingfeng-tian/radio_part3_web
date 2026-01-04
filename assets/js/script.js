@@ -1,60 +1,8 @@
 let currentAns = "", currentId = 0, isAnswered = false;
 let sessionCorrect = 0, sessionTotal = 0;
-// 新增：暫存當前題目詳細資料，給 AI 用
 let currentQuestionData = {}; 
 
 const allCategories = ['無線電規章與相關法規', '無線電通訊方法', '無線電系統原理', '無線電相關安全防護', '電磁相容性技術', '射頻干擾的預防與排除'];
-
-/**
- * 通用複製函式 (支援手機與電腦)
- */
-function copyToClipboard(text) {
-    // 優先嘗試現代 API (需 HTTPS)
-    if (navigator.clipboard && navigator.clipboard.writeText) {
-        navigator.clipboard.writeText(text).then(() => {
-            alert("✅ 題目解析已複製！\n您可以自行切換至 AI 工具貼上。");
-        }).catch(() => {
-            fallbackCopy(text);
-        });
-    } else {
-        fallbackCopy(text);
-    }
-}
-
-function fallbackCopy(text) {
-    const textArea = document.createElement("textarea");
-    textArea.value = text;
-    // 避免手機畫面跳動
-    textArea.style.position = "fixed";
-    textArea.style.left = "-9999px";
-    textArea.style.top = "0";
-    textArea.setAttribute("readonly", "");
-    document.body.appendChild(textArea);
-
-    // iOS 特殊處理
-    if (navigator.userAgent.match(/ipad|iphone/i)) {
-        const range = document.createRange();
-        range.selectNodeContents(textArea);
-        const selection = window.getSelection();
-        selection.removeAllRanges();
-        selection.addRange(range);
-        textArea.setSelectionRange(0, 999999);
-    } else {
-        textArea.select();
-    }
-
-    try {
-        const successful = document.execCommand('copy');
-        if (successful) {
-            alert("✅ 題目解析已複製！ (相容模式)");
-        } else {
-            alert("❌ 複製失敗，請手動選取文字複製。");
-        }
-    } catch (err) {
-        alert("❌ 瀏覽器不支援複製");
-    }
-    document.body.removeChild(textArea);
-}
 
 function loadSettings() {
     document.getElementById('recordModeToggle').checked = (localStorage.getItem('isRecordMode') !== 'false');
@@ -88,7 +36,7 @@ function saveSettings() {
 async function fetchNext() {
     isAnswered = false;
     document.getElementById('next-btn').style.display = 'none';
-    document.getElementById('ai-btn').style.display = 'none'; // 換題時隱藏 AI 按鈕
+    document.getElementById('ai-btn').style.display = 'none'; 
     document.querySelectorAll('.opt-btn').forEach(b => { b.className = 'opt-btn'; b.disabled = false; });
     
     const cats = JSON.parse(localStorage.getItem('selectedCats')) || allCategories;
@@ -98,7 +46,6 @@ async function fetchNext() {
     });
 
     try {
-        // *** 修改點：路徑改為 api/get_question.php ***
         const res = await fetch(`api/get_question.php?${params.toString()}`);
         const data = await res.json();
         
@@ -106,21 +53,17 @@ async function fetchNext() {
             alert(data.message || "無題目資料"); return;
         }
 
-        // 存下來給 AI 用
         currentQuestionData = data;
-
         currentId = data.id; 
         currentAns = data.answer;
         document.getElementById('category').innerText = data.category;
         document.getElementById('q-num').innerText = `題號: ${data.q_num}`;
         document.getElementById('question').innerText = `${data.question} (${data.correct_count || 0}/${data.wrong_count || 0})`;
         
-        // 圖片處理
         const imgContainer = document.getElementById('q-image-container');
         const imgTag = document.getElementById('q-image');
         if (data.image && data.image.trim() !== "") {
-            // 修正點：加上 assets/ 前綴
-            imgTag.src = `assets/images/${data.image}`; 
+            imgTag.src = `assets/images/${data.image}`;
             imgContainer.style.display = 'block';
         } else {
             imgContainer.style.display = 'none';
@@ -136,8 +79,6 @@ async function fetchNext() {
 function checkAns(choice) {
     if (isAnswered) return;
     isAnswered = true; sessionTotal++;
-    
-    // 紀錄使用者選了什麼
     currentQuestionData.userChoice = choice;
 
     const isCorrect = (choice === currentAns);
@@ -154,17 +95,16 @@ function checkAns(choice) {
         const formData = new FormData();
         formData.append('qid', currentId);
         formData.append('status', isCorrect ? 'correct' : 'wrong');
-        
-        // *** 修改點：路徑改為 api/record_answer.php ***
         fetch('api/record_answer.php', { method: 'POST', body: formData }).then(() => updateProgressUI());
     }
     
-    // 答題後顯示按鈕
     document.getElementById('next-btn').style.display = 'block';
     document.getElementById('ai-btn').style.display = 'block';
 }
 
-// 複製並詢問 AI (不跳轉)
+/**
+ * 產生 Prompt 並呼叫 utils.js 中的 copyToClipboard
+ */
 function copyAndAskAI_Single() {
     const prompt = `我正在練習業餘無線電題目，請幫我解析這題：
 
@@ -200,7 +140,6 @@ function startCustomExam() {
 
 async function updateProgressUI() {
     try {
-        // *** 修改點：路徑改為 api/get_progress.php ***
         const res = await fetch('api/get_progress.php');
         const data = await res.json();
         const container = document.getElementById('progressContent');

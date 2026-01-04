@@ -48,6 +48,7 @@
     </div>
 </div>
 
+<script src="assets/js/utils.js"></script>
 <script src="assets/js/exam.js"></script>
 </body>
 </html>
