@@ -13,7 +13,9 @@ if ($mode === 'weakness') {
 // 類別篩選
 if (!empty($cats)) {
     $cat_array = explode(',', $cats);
-    $cat_list = "'" . implode("','", array_map(fn($c) => mysqli_real_escape_string($conn, $c), $cat_array)) . "'";
+    $cat_list = "'" . implode("','", array_map(function($c) use ($conn) {
+    return mysqli_real_escape_string($conn, $c);
+    }, $cat_array)) . "'";
     $where_clauses[] = "q.category IN ($cat_list)";
 }
 
