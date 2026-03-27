@@ -6,7 +6,8 @@ $username = "root";
 $password = "";
 
 // 建議使用 try-catch 或設定不顯示詳細錯誤
-mysqli_report(MYSQLI_REPORT_OFF); // 關閉報錯功能，避免暴露路徑
+ysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
+// mysqli_report(MYSQLI_REPORT_OFF); // 關閉報錯功能，避免暴露路徑
 
 $conn = mysqli_connect($host, $username, $password, $db_name);
 
